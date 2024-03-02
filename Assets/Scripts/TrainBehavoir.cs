@@ -146,6 +146,12 @@ public class TrainBehavoir : MonoBehaviour
 
         // move train
         gameObject.transform.position += new Vector3( (float)( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
+
+        // forwards teleportation
+        if ( gameObject.transform.position.x > 100 )
+            gameObject.transform.position -= new Vector3(200,0,0);
+        if ( gameObject.transform.position.x < -100 )
+            gameObject.transform.position += new Vector3(200,0,0);
     }
 
     void OnMessageArrived(string msg)
@@ -167,7 +173,7 @@ public class TrainBehavoir : MonoBehaviour
             {
                 
                 case InputDeviceType.throttle:
-                    double acc = ( (trainTractiveEffort / trainMass) * ( val / (float)255 ) ) * (Time.deltaTime * 10) * (val > 5? 1:0);
+                    double acc = ( (trainTractiveEffort / trainMass) * ( val / (float)255 ) ) * (Time.deltaTime * 10) * (val > 2? 1:0);
                     // handle throttle
                     if ( direction != Directions.neutral )
                         velocity += acc;
