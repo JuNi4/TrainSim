@@ -56,7 +56,6 @@ public class TrainBehavoir : MonoBehaviour
     public double wheelSlipSandFactor = 1;
     public double wheelSlipMassFactor = 1;
 
-
     // train values //
     [Header("Train Variables")]
     // velocity
@@ -68,6 +67,20 @@ public class TrainBehavoir : MonoBehaviour
 
     // the direction the train will travel in
     public Directions direction;
+
+    // automaticly set train vars //
+    // total mass of the entire train
+    public double trainMass;
+
+    // break power of the carts
+    public double trainBreakForce;
+
+    public double trainTractiveEffort;
+
+    public double trainMaxBreakLinePressure;
+    public double trainBreakLinePressure = 0;
+
+    public long chunkPos = 0;
 
     // Input Values //
     [Header("Controll Variables")]
@@ -82,18 +95,6 @@ public class TrainBehavoir : MonoBehaviour
         indipendantBreak_NSL, trainBreak_NSL
     }
     public InputDeviceType[] inputs = {};
-
-    // automaticly set train vars //
-    // total mass of the entire train
-    public double trainMass;
-
-    // break power of the carts
-    public double trainBreakForce;
-
-    public double trainTractiveEffort;
-
-    public double trainMaxBreakLinePressure;
-    public double trainBreakLinePressure = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -148,10 +149,14 @@ public class TrainBehavoir : MonoBehaviour
         gameObject.transform.position += new Vector3( (float)( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
 
         // forwards teleportation
-        if ( gameObject.transform.position.x > 100 )
+        if ( gameObject.transform.position.x > 100 ) {
             gameObject.transform.position -= new Vector3(200,0,0);
-        if ( gameObject.transform.position.x < -100 )
+            chunkPos += 1;
+        }
+        if ( gameObject.transform.position.x < -100 ) {
             gameObject.transform.position += new Vector3(200,0,0);
+            chunkPos -= 1;
+        }
     }
 
     void OnMessageArrived(string msg)
