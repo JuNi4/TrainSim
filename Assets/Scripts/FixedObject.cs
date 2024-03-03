@@ -21,7 +21,7 @@ public class FixedObject : MonoBehaviour
     public void move()
     {
         // teleport according to chunk position
-        long chunkDist = chunkPos - train.chunkPos +1;
+        long chunkDist = chunkPos - train.chunkPos;
 
         // calculate x coodinate
         float x = (float) ( chunkDist * chunkSize );
