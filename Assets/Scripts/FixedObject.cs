@@ -23,6 +23,13 @@ public class FixedObject : MonoBehaviour
         // teleport according to chunk position
         long chunkDist = chunkPos - train.chunkPos;
 
+        // check if train is about to leave the chunk
+        if ( train.transform.position.x > chunkSize/2-.01 )
+            chunkDist -= 1;
+
+        if ( train.transform.position.x < -chunkSize/2+.01 )
+            chunkDist += 1;
+
         // calculate x coodinate
         float x = (float) ( chunkDist * chunkSize );
 
