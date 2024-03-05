@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   train: {fileID: 622323581}
-  chunkPos: 0
+  chunkPos: 100
   chunkSize: 200
   maxPeopleEntering: 0
 --- !u!4 &576739718 stripped
@@ -921,7 +921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   train: {fileID: 622323581}
-  chunkPos: 0
+  chunkPos: 20
   chunkSize: 200
   maxPeopleEntering: 0
 --- !u!1 &963194225

@@ -14,7 +14,7 @@ public class FixedObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        train = GameObject.Find("TrainBehavoir").GetComponent<TrainBehavoir>();
     }
 
     // move the object to the position relative to the train
