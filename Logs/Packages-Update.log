@@ -43,3 +43,15 @@ The following packages were updated:
   com.unity.render-pipelines.universal from version 14.0.3 to 14.0.8
   com.unity.timeline from version 1.7.1 to 1.7.5
   com.unity.visualscripting from version 1.7.8 to 1.8.0
+
+=== Tue Mar  5 14:10:20 2024
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ide.rider from version 3.0.24 to 3.0.27
+  com.unity.ide.visualstudio from version 2.0.18 to 2.0.22
+  com.unity.render-pipelines.universal from version 14.0.8 to 14.0.10
+  com.unity.timeline from version 1.7.5 to 1.7.6
+  com.unity.visualscripting from version 1.8.0 to 1.9.1
