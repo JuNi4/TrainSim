@@ -7,7 +7,20 @@ using UnityEngine.UI;
 public class tab : MonoBehaviour
 {
 
+    [Header("Tab System Setup")]
+    public int tabIndex = 0;
+    public GameObject tabs;
+
+    public int tabIndexOffset = 1;
+
+    [Space(10)]
+    public int contentIndex = 1;
+    public GameObject contents;
     public int activeElement = 0;
+
+    [Space(10)]
+    public string leftKey = "";
+    public string rightKey = "";
 
     [Header("Standard / Inactive tab button colors")]
     public Color stdColor = new Color(255, 255, 255, 255);
@@ -23,15 +36,16 @@ public class tab : MonoBehaviour
     public Color activeDisabledColor = new Color(200, 200, 200, 255);
     public Color activeTextColor = new Color(255, 255, 255, 255);
 
-    public GameObject tabs;
-    public GameObject contents;
-
     // Start is called before the first frame update
     void Start()
     {
         // get tabs and contents
-        tabs = gameObject.transform.GetChild(0).gameObject;
-        contents = gameObject.transform.GetChild(1).gameObject;
+        if ( tabs == null ) {
+            tabs = gameObject.transform.GetChild(tabIndex).gameObject;
+        }
+        if ( contents == null ) {
+            contents = gameObject.transform.GetChild(contentIndex).gameObject;
+        }
 
         disableAll();
         setActiveElement(activeElement);
@@ -40,7 +54,16 @@ public class tab : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if ( leftKey != "" && rightKey != "" ) {
+            // keyboard navigation to the left
+            if ( Input.GetKeyDown(leftKey) && activeElement > 0 ) {
+                setActiveElement(activeElement-1);
+            }
+            // keyboard navigation to the right
+            if ( Input.GetKeyDown(rightKey) && activeElement < contents.transform.childCount-1 ) {
+                setActiveElement(activeElement+1);
+            }
+        }
     }
 
     // change the active element
@@ -50,14 +73,14 @@ public class tab : MonoBehaviour
         contents.transform.GetChild(activeElement).gameObject.SetActive( false );
 
         // set the color of the tab button
-        Button btn = tabs.transform.GetChild(activeElement + 1).GetComponent<Button>();
-        TextMeshProUGUI txt = tabs.transform.GetChild(activeElement + 1).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        Button btn = tabs.transform.GetChild(activeElement + tabIndexOffset).GetComponent<Button>();
+        TextMeshProUGUI txt = tabs.transform.GetChild(activeElement + tabIndexOffset).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
         ColorBlock cb = btn.colors;
         cb.normalColor = stdColor;
         cb.highlightedColor = stdHoverColor;
         cb.pressedColor = stdClickColor;
-        cb.selectedColor = stdColor;
+        cb.selectedColor = stdClickColor;
         cb.disabledColor = stdDisabledColor;
 
         txt.color = stdTextColor;
@@ -69,8 +92,8 @@ public class tab : MonoBehaviour
         contents.transform.GetChild(activeElement).gameObject.SetActive( true );
 
         // set the color of the tab button
-        btn = tabs.transform.GetChild(activeElement + 1).GetComponent<Button>();
-        txt = tabs.transform.GetChild(activeElement + 1).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        btn = tabs.transform.GetChild(activeElement + tabIndexOffset).GetComponent<Button>();
+        txt = tabs.transform.GetChild(activeElement + tabIndexOffset).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
 
         cb = btn.colors;
@@ -78,7 +101,7 @@ public class tab : MonoBehaviour
         cb.normalColor = activeColor;
         cb.highlightedColor = activeHoverColor;
         cb.pressedColor = activeClickColor;
-        cb.selectedColor = activeColor;
+        cb.selectedColor = activeClickColor;
         cb.disabledColor = activeDisabledColor;
 
         txt.color = activeTextColor;
@@ -95,14 +118,14 @@ public class tab : MonoBehaviour
             contents.transform.GetChild(i).gameObject.SetActive( false );
 
             // set button
-            Button btn = tabs.transform.GetChild(i + 1).GetComponent<Button>();
-            TextMeshProUGUI txt = tabs.transform.GetChild(i + 1).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            Button btn = tabs.transform.GetChild(i + tabIndexOffset).GetComponent<Button>();
+            TextMeshProUGUI txt = tabs.transform.GetChild(i + tabIndexOffset).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
             ColorBlock cb = btn.colors;
             cb.normalColor = stdColor;
             cb.highlightedColor = stdHoverColor;
             cb.pressedColor = stdClickColor;
-            cb.selectedColor = stdColor;
+            cb.selectedColor = stdClickColor;
             cb.disabledColor = stdDisabledColor;
 
             txt.color = stdTextColor;
