@@ -5,16 +5,24 @@ using UnityEngine;
 public class FixedObject : MonoBehaviour
 {
 
-    public TrainBehavoir train;
+    
+    public Train train;
 
     public long chunkPos = 0;
 
     public long chunkSize = 200;
 
     // Start is called before the first frame update
+
+    public void assignItems()
+    {
+        train = GameObject.Find("TrainBehavoir").GetComponent<Train>();
+    }
+
     void Start()
     {
-        train = GameObject.Find("TrainBehavoir").GetComponent<TrainBehavoir>();
+        // assign train object
+        assignItems();
     }
 
     // move the object to the position relative to the train
