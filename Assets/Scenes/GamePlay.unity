@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -394,7 +394,6 @@ GameObject:
   - component: {fileID: 528163565}
   - component: {fileID: 528163564}
   - component: {fileID: 528163563}
-  - component: {fileID: 528163567}
   m_Layer: 0
   m_Name: Station 3
   m_TagString: Untagged
@@ -481,29 +480,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528163561}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 200, y: 1.62, z: -6.3}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -100, y: 339.59842, z: -518.4959}
   m_LocalScale: {x: 200, y: 1, z: 8.3925}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1021553456}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &528163567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 528163561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  train: {fileID: 622323581}
-  chunkPos: 100
-  chunkSize: 200
-  maxPeopleEntering: 0
 --- !u!1 &622323580
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,10 +496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622323585}
-  - component: {fileID: 622323584}
-  - component: {fileID: 622323583}
-  - component: {fileID: 622323582}
-  - component: {fileID: 622323581}
+  - component: {fileID: 622323586}
   m_Layer: 0
   m_Name: Train
   m_TagString: Untagged
@@ -524,142 +504,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &622323581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622323580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6b2b97fa9fac633b0a856e639996d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serialController: {fileID: 0}
-  useExternalControlls: 0
-  locomotiveMass: 10000
-  locomotiveTractiveEffort: 10000
-  locomotiveBreakForce: 10
-  locomotiveMaxMainReservoirPressure: 5
-  locomotiveMainReservoirPressure: 5
-  locomotiveMaxBreakLinePressure: 5
-  locomotiveBreakPump: 0.15
-  locomotiveBreakValve: 0.3
-  locomotiveFuelCapacity: 300
-  locomotiveFuelConsumption: 0.1
-  locomotiveSandCapacity: 300
-  locomotiveSandConsumption: 0.1
-  airFriction: 1
-  wheelSlipFactor: 1
-  wheelSlipSandFactor: 1
-  wheelSlipMassFactor: 1
-  velocity: 0
-  direction: 0
-  trainMass: 0
-  trainBreakForce: 0
-  trainTractiveEffort: 0
-  trainMaxBreakLinePressure: 0
-  trainBreakLinePressure: 0
-  chunkPos: 0
-  servos:
-  - servoMinAngle: 0
-    servoMaxAngle: 180
-    minValue: 0
-    maxValue: 200
-    type: 0
-  - servoMinAngle: 0
-    servoMaxAngle: 180
-    minValue: 0
-    maxValue: 280
-    type: 1
-  - servoMinAngle: 0
-    servoMaxAngle: 180
-    minValue: 0
-    maxValue: 1
-    type: 2
-  - servoMinAngle: 0
-    servoMaxAngle: 180
-    minValue: 0
-    maxValue: 1
-    type: 3
-  - servoMinAngle: 0
-    servoMaxAngle: 180
-    minValue: 0
-    maxValue: 1
-    type: 4
-  inputs: 000000000400000001000000
---- !u!65 &622323582
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622323580}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &622323583
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622323580}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &622323584
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622323580}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &622323585
 Transform:
   m_ObjectHideFlags: 0
@@ -677,6 +521,84 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &622323586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622323580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6b2b97fa9fac633b0a856e639996d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serialController: {fileID: 0}
+  useExternalControlls: 1
+  locomotiveMass: 5000
+  locomotiveTractiveEffort: 1000
+  locomotiveBreakForce: 500
+  locomotiveMaxMainReservoirPressure: 5
+  locomotiveMainReservoirPressure: 0
+  locomotiveMaxBreakLinePressure: 5
+  locomotiveBreakPump: 0.1
+  locomotiveBreakValve: 0.2
+  locomotiveFuelCapacity: 300
+  locomotiveFuelConsumption: 0.1
+  locomotiveSandCapacity: 280
+  locomotiveSandConsumption: 0.1
+  airFriction: 0.01
+  wheelSlipFactor: 1
+  wheelSlipSandFactor: 1
+  wheelSlipMassFactor: 1
+  velocity: 0
+  direction: 0
+  trainMass: 0
+  trainBreakForce: 0
+  trainTractiveEffort: 0
+  trainMaxBreakLinePressure: 0
+  trainBreakLinePressure: 0
+  chunkPos: 0
+  cars:
+  - freightType: 0
+    carType: 0
+    capacity: 150
+    carMaxBrakeLinePressure: 2.5
+    carBreakForce: 500
+    carMass: 1000
+  - freightType: 0
+    carType: 0
+    capacity: 150
+    carMaxBrakeLinePressure: 2.5
+    carBreakForce: 500
+    carMass: 1000
+  servos:
+  - servoMinAngle: 0
+    servoMaxAngle: 0
+    minValue: 0
+    maxValue: 0
+    type: 0
+  - servoMinAngle: 0
+    servoMaxAngle: 0
+    minValue: 0
+    maxValue: 0
+    type: 1
+  - servoMinAngle: 0
+    servoMaxAngle: 0
+    minValue: 0
+    maxValue: 0
+    type: 2
+  - servoMinAngle: 0
+    servoMaxAngle: 0
+    minValue: 0
+    maxValue: 0
+    type: 3
+  - servoMinAngle: 0
+    servoMaxAngle: 0
+    minValue: 0
+    maxValue: 0
+    type: 4
+  inputs: 000000000400000001000000
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,6 +717,56 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &755293442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 755293444}
+  - component: {fileID: 755293443}
+  m_Layer: 0
+  m_Name: Station 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &755293443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755293442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  train: {fileID: 0}
+  chunkPos: 0
+  chunkSize: 200
+  freights: []
+  maxTrainDistance: 50
+--- !u!4 &755293444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755293442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 300, y: 1.6, z: -6.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 857803153}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &857803148
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +779,6 @@ GameObject:
   - component: {fileID: 857803152}
   - component: {fileID: 857803151}
   - component: {fileID: 857803150}
-  - component: {fileID: 857803154}
   m_Layer: 0
   m_Name: Station 2
   m_TagString: Untagged
@@ -894,29 +865,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 857803148}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 200, y: 1.62, z: -6.3}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -100, y: 0, z: 0}
   m_LocalScale: {x: 200, y: 1, z: 8.3925}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 755293444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &857803154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857803148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  train: {fileID: 622323581}
-  chunkPos: 20
-  chunkSize: 200
-  maxPeopleEntering: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,6 +1009,106 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!1 &1021553454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021553456}
+  - component: {fileID: 1021553455}
+  m_Layer: 0
+  m_Name: Station 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1021553455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021553454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  train: {fileID: 0}
+  chunkPos: 0
+  chunkSize: 200
+  freights: []
+  maxTrainDistance: 50
+--- !u!4 &1021553456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021553454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 500, y: -337.97842, z: 512.1959}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 528163566}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1112507369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1112507371}
+  - component: {fileID: 1112507370}
+  m_Layer: 0
+  m_Name: Station
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1112507370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112507369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  train: {fileID: 0}
+  chunkPos: 0
+  chunkSize: 200
+  freights: []
+  maxTrainDistance: 50
+--- !u!4 &1112507371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112507369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 100, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1180366520}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1130868930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1135,7 +1190,6 @@ GameObject:
   - component: {fileID: 1180366519}
   - component: {fileID: 1180366518}
   - component: {fileID: 1180366517}
-  - component: {fileID: 1180366521}
   m_Layer: 0
   m_Name: Station
   m_TagString: Untagged
@@ -1222,29 +1276,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1180366515}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.62, z: -2.71}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -100, y: 1.7, z: -2.9}
   m_LocalScale: {x: 200, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1112507371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1180366521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180366515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ed1ee5503d0faffba36d61aa2565fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  train: {fileID: 622323581}
-  chunkPos: 0
-  chunkSize: 200
-  maxPeopleEntering: 0
 --- !u!4 &1293747577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6db6eebee56eb4d9c949274e742141c8,
@@ -1330,6 +1368,6 @@ SceneRoots:
   - {fileID: 359573991}
   - {fileID: 47982850}
   - {fileID: 250337084}
-  - {fileID: 1180366520}
-  - {fileID: 857803153}
-  - {fileID: 528163566}
+  - {fileID: 1112507371}
+  - {fileID: 755293444}
+  - {fileID: 1021553456}
