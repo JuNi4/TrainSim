@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class WorldGenMaster : MonoBehaviour
 {
-    //store the camera to track
-    public Camera camera;
-    //store the material for the chuncks
-    public Material chunkMaterial;
-
     Vector3[] newVertices;
     int[] newTriangles;
 
@@ -44,7 +39,9 @@ public class WorldGenMaster : MonoBehaviour
     void Start()
     {
         Mesh mesh = new Mesh();
-        generateMeshData(16,16);
+        generateMeshData(2,2);
+        mesh.vertices = newVertices;
+        mesh.triangles = newTriangles;
         mesh.RecalculateNormals();
         GetComponent<MeshFilter>().mesh = mesh;
     }
