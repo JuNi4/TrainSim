@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -563,12 +563,14 @@ MonoBehaviour:
   - freightType: 0
     carType: 0
     capacity: 150
+    fillLevel: 0
     carMaxBrakeLinePressure: 2.5
     carBreakForce: 500
     carMass: 1000
   - freightType: 0
     carType: 0
     capacity: 150
+    fillLevel: 0
     carMaxBrakeLinePressure: 2.5
     carBreakForce: 500
     carMass: 1000
@@ -747,10 +749,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   train: {fileID: 0}
-  chunkPos: 0
+  chunkPos: 20
   chunkSize: 200
-  freights: []
+  freights:
+  - freight: 0
+    load: 0
+    dataType: 0
+    loadingCapacity: 50
+    fillLevel: 25
+    loadingMin: 25
+    loadingMax: 25
+    unloadingMin: 0
+    unloadingMax: 0
   maxTrainDistance: 50
+  dist: 999
 --- !u!4 &755293444
 Transform:
   m_ObjectHideFlags: 0
@@ -930,9 +942,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.3
   far clip plane: 1000
-  field of view: 90
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -959,7 +971,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.91, y: 2.88, z: 0.04}
+  m_LocalPosition: {x: 2.41, y: 2.88, z: 0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1039,10 +1051,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   train: {fileID: 0}
-  chunkPos: 0
+  chunkPos: 100
   chunkSize: 200
-  freights: []
+  freights:
+  - freight: 0
+    load: 1
+    dataType: 0
+    loadingCapacity: 50
+    fillLevel: 0
+    loadingMin: 0
+    loadingMax: 0
+    unloadingMin: 50
+    unloadingMax: 50
   maxTrainDistance: 50
+  dist: 999
 --- !u!4 &1021553456
 Transform:
   m_ObjectHideFlags: 0
@@ -1092,7 +1114,8 @@ MonoBehaviour:
   chunkPos: 0
   chunkSize: 200
   freights: []
-  maxTrainDistance: 50
+  maxTrainDistance: -1
+  dist: 999
 --- !u!4 &1112507371
 Transform:
   m_ObjectHideFlags: 0

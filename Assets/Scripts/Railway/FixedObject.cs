@@ -5,7 +5,6 @@ using UnityEngine;
 public class FixedObject : MonoBehaviour
 {
 
-    
     public Train train;
 
     public long chunkPos = 0;
@@ -16,7 +15,7 @@ public class FixedObject : MonoBehaviour
 
     public void assignItems()
     {
-        train = GameObject.Find("TrainBehavoir").GetComponent<Train>();
+        train = GameObject.Find("Train").GetComponent<Train>();
     }
 
     void Start()
