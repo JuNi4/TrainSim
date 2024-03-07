@@ -15,7 +15,7 @@ using System;
 
 // using Servo;
 
-public class TrainBehavoir : MonoBehaviour
+public class Train : MonoBehaviour
 {   
     // Serial setup //
     [Header("Serial Comms Controller")] 
@@ -29,10 +29,10 @@ public class TrainBehavoir : MonoBehaviour
     public double locomotiveMass = 10000;
 
     // locomotive tractive effort
-    public double locomotiveTractiveEffort = 1;
+    public double locomotiveTractiveEffort = 1000;
 
     // locomotive break force
-    public double locomotiveBreakForce = 1;
+    public double locomotiveBreakForce = 500;
 
     public double locomotiveMaxMainReservoirPressure = 5;
     public double locomotiveMainReservoirPressure = 0;
@@ -82,6 +82,9 @@ public class TrainBehavoir : MonoBehaviour
 
     public long chunkPos = 0;
 
+    [Header("Cars")]
+    public TrainCar[] cars;
+
     // Input Values //
     [Header("Controll Variables")]
 
@@ -96,19 +99,50 @@ public class TrainBehavoir : MonoBehaviour
     }
     public InputDeviceType[] inputs = {};
     
+    // function for calculating the tractive effort int the train
+    public void recalculateTrainTractiveEffort()
+    {
+        // add current locomotive tractive effort
+        trainTractiveEffort = locomotiveTractiveEffort;
+    }
+    public void recalculateTrainBreakForce()
+    {
+        trainBreakForce = 0;
+        // add all break forces
+        for ( int i = 0; i < cars.Length; i++ ) {
+            trainBreakForce += cars[i].carBreakForce;
+        }
+    }
+    public void recalculateTrainMaxBreakLinePressure()
+    {
+        // add current locomotive break pressure
+        trainMaxBreakLinePressure = locomotiveMaxBreakLinePressure;
+        // add all break forces
+        for ( int i = 0; i < cars.Length; i++ ) {
+            trainMaxBreakLinePressure += cars[i].carMaxBrakeLinePressure;
+        }
+    }
+    public void recalculateTrainMass()
+    {
+        // add current locomotive mass
+        trainMass = locomotiveMass;
+        // add all break forces
+        for ( int i = 0; i < cars.Length; i++ ) {
+            trainMass += cars[i].carMass;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         // go to 0 0 0
         gameObject.transform.position = new Vector3(0,0,0);
 
-        // calculate train mass
-        trainMass = locomotiveMass;
 
-        // calculate train tractive effort
-        trainTractiveEffort = locomotiveTractiveEffort;
-
-        // calculate the brake force for the carts
+        recalculateTrainTractiveEffort();
+        recalculateTrainBreakForce();
+        recalculateTrainMaxBreakLinePressure();
+        recalculateTrainMass();
     }
 
     // Update is called once per frame
@@ -132,10 +166,17 @@ public class TrainBehavoir : MonoBehaviour
 
         // TRAIN //
 
-        // break //
-
-        // apply breaks
-        double breakForce = locomotiveBreakForce * (( locomotiveMaxMainReservoirPressure - locomotiveMainReservoirPressure) / locomotiveMaxMainReservoirPressure ) * Time.deltaTime;
+        // apply breaks //
+        // locomotive breaks
+        double breakForce = locomotiveBreakForce * (( locomotiveMaxMainReservoirPressure - locomotiveMainReservoirPressure) / locomotiveMaxMainReservoirPressure );
+        breakForce /= trainMass;
+        breakForce *= Time.deltaTime;
+        if ( velocity - breakForce >= 0 )
+            velocity -= breakForce;
+        // train breaks
+        breakForce = trainBreakForce * (( trainMaxBreakLinePressure - trainBreakLinePressure) / trainMaxBreakLinePressure );
+        breakForce /= trainMass;
+        breakForce *= Time.deltaTime;
         if ( velocity - breakForce >= 0 )
             velocity -= breakForce;
 
@@ -143,7 +184,7 @@ public class TrainBehavoir : MonoBehaviour
         //       Friction
         //  V² * --------
         //         Mass
-        velocity -= ( Math.Pow(velocity, 2) * ( airFriction / locomotiveMass ) ) * Time.deltaTime;
+        velocity -= Math.Pow(velocity, 2) * ( airFriction / trainMass ) * Time.deltaTime;
 
         // move train
         gameObject.transform.position += new Vector3( (float)( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
@@ -178,7 +219,7 @@ public class TrainBehavoir : MonoBehaviour
             {
                 
                 case InputDeviceType.throttle:
-                    double acc = ( (trainTractiveEffort / trainMass) * ( val / (float)255 ) ) * (Time.deltaTime * 10) * (val > 2? 1:0);
+                    double acc =  trainTractiveEffort / trainMass * ( val / (float)255 ) * (Time.deltaTime * 10) * (val > 2? 1:0);
                     // handle throttle
                     if ( direction != Directions.neutral )
                         velocity += acc;
@@ -221,10 +262,10 @@ public class TrainBehavoir : MonoBehaviour
                     //  apply - decrease break pressure
                     //  more apply - decrease break pressure a bit faster
                     //  emerghency - rapid decrease
-                    // if ( val == 0 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-                    // else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
-                    // else if ( val == 3 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
-                    // else if ( val == 4 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
+                    if ( val == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
+                    else if ( val == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
+                    else if ( val == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
+                    else if ( val == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
 
                     break;
 
