@@ -4,33 +4,62 @@ using UnityEngine;
 
 public class WorldGenMaster : MonoBehaviour
 {
-    Vector3[] newVertices;
-    int[] newTriangles;
-
-    void generateMeshData(int width, int height)
+    [System.Serializable]
+    public class Octave
     {
-        int i = 0;
-        for (int x = 0; x < width; x++)
+        public float noiseScale = 1.0f;
+        public float frequency = 1.0f;
+    }
+
+    public Vector2Int chunkSize;
+    public int vertexScale;
+    public float baseScale = 1.0f;
+    public List<Vector3> newVertices;
+    public List<int> newTriangles;
+
+    public List<Octave> octaves;
+
+    new Transform transform;
+
+    private float calculateNoise(float x, float y)
+    {
+        float ret = 0;
+        for (int i = 0; i < octaves.Count; i++)
         {
-            for (int y = 0; y < height; y++)
+            Octave oc = octaves[i];
+            Vector2 sample = new Vector2(x,y);
+            sample += new Vector2(transform.position.x, transform.position.y);
+            sample /= new Vector2(chunkSize.x, chunkSize.y);
+            ret += (Mathf.PerlinNoise(sample.x * oc.frequency, sample.y * oc.frequency)
+                    - 0.5f) * oc.noiseScale;
+        }
+        return ret;
+    }
+
+    private void generateMeshData(int width, int height)
+    {
+        int w = width / vertexScale;
+        int h = height / vertexScale;
+
+        for (float x = 0; x < w; x++)
+        {
+            for (float y = 0; y < h; y++)
             {
-                newVertices[i] = new Vector3(x, 0, y);
-                i++;
+                newVertices.Add(new Vector3(x*vertexScale, calculateNoise(x*vertexScale, y*vertexScale) * baseScale, y*vertexScale));
             }
         }
 
-        i = 0;
-        for (int x = 0; x < width-1; x++)
+        for (int x = 0; x < w-1; x++)
         {
-            for (int y = 0; y < height-1; y++)
+            for (int y = 0; y < h-1; y++)
             {
-                int j = x*width + y;
-                newTriangles[i] = j;         i++;
-                newTriangles[i] = j+1;       i++;
-                newTriangles[i] = j+width;   i++;
-                newTriangles[i] = j+1;       i++;
-                newTriangles[i] = j+width;   i++;
-                newTriangles[i] = j+width+1; i++;
+                int i = x*w + y;
+                newTriangles.Add(i);
+                newTriangles.Add(i+1);
+                newTriangles.Add(i+w);
+                newTriangles.Add(i+w);
+                newTriangles.Add(i+1);
+                newTriangles.Add(i+w+1);
             }
         }
     }
@@ -38,11 +67,15 @@ public class WorldGenMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        transform = GetComponent<Transform>();
         Mesh mesh = new Mesh();
-        generateMeshData(2,2);
-        mesh.vertices = newVertices;
-        mesh.triangles = newTriangles;
+        newVertices.Clear();
+        newTriangles.Clear();
+        generateMeshData(chunkSize.x, chunkSize.y);
+        mesh.vertices = newVertices.ToArray();
+        mesh.triangles = newTriangles.ToArray();
         mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
         GetComponent<MeshFilter>().mesh = mesh;
     }
 
