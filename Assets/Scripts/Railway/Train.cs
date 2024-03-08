@@ -189,7 +189,7 @@ public class Train : MonoBehaviour
         // move train
         gameObject.transform.position += new Vector3( (float)( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
 
-        // forwards teleportation
+        // // forwards teleportation
         if ( gameObject.transform.position.x > 100 ) {
             gameObject.transform.position -= new Vector3(200,0,0);
             chunkPos += 1;
