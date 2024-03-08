@@ -9,7 +9,12 @@ public class LoadingInfo {
     // loading settings
     [Header("Frieght Settings")]
     public LoadingType load;
+
+    public DataType dataType;
+
     public float loadingCapacity = 50f;
+
+    public float fillLevel = 50;
 
     // only realy neccessary for people
     public float loadingMin = 20f;

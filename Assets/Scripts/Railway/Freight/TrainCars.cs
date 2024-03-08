@@ -10,10 +10,12 @@ public class TrainCar {
     // capacity
     public float capacity;
 
-    [Header("Car Stats")]
-    public double carMaxBrakeLinePressure = 2.5;
-    public double carBreakForce = 400;
+    public float fillLevel;
 
-    public double carMass = 500;
+    [Header("Car Stats")]
+    public float carMaxBrakeLinePressure = 2.5f;
+    public float carBreakForce = 400;
+
+    public float carMass = 500;
 
 }
