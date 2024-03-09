@@ -2,81 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Octave
+{
+    public float noiseScale = 1.0f;
+    public float frequency = 1.0f;
+}
+
 public class WorldGenMaster : MonoBehaviour
 {
-    [System.Serializable]
-    public class Octave
-    {
-        public float noiseScale = 1.0f;
-        public float frequency = 1.0f;
-    }
-
-    public Vector2Int chunkSize;
+    public Vector3Int chunkSize;
+    public uint renderDistance = 5;
     public int vertexScale;
-    public float baseScale = 1.0f;
-    public List<Vector3> newVertices;
-    public List<int> newTriangles;
+    public Vector2 baseScale = new Vector2(1,1);
 
     public List<Octave> octaves;
 
+    public Material chunkMat;
+
     new Transform transform;
 
-    private float calculateNoise(float x, float y)
+    private void addChunk(Vector3 pos)
     {
-        float ret = 0;
-        for (int i = 0; i < octaves.Count; i++)
-        {
-            Octave oc = octaves[i];
-            Vector2 sample = new Vector2(x,y);
-            sample += new Vector2(transform.position.x, transform.position.y);
-            sample /= new Vector2(chunkSize.x, chunkSize.y);
-            ret += (Mathf.PerlinNoise(sample.x * oc.frequency, sample.y * oc.frequency)
-                    - 0.5f) * oc.noiseScale;
-        }
-        return ret;
-    }
-
-    private void generateMeshData(int width, int height)
-    {
-        int w = width / vertexScale;
-        int h = height / vertexScale;
-
-        for (float x = 0; x < w; x++)
-        {
-            for (float y = 0; y < h; y++)
-            {
-                newVertices.Add(new Vector3(x*vertexScale, calculateNoise(x*vertexScale, y*vertexScale) * baseScale, y*vertexScale));
-            }
-        }
-
-        for (int x = 0; x < w-1; x++)
-        {
-            for (int y = 0; y < h-1; y++)
-            {
-                int i = x*w + y;
-                newTriangles.Add(i);
-                newTriangles.Add(i+1);
-                newTriangles.Add(i+w);
-                newTriangles.Add(i+w);
-                newTriangles.Add(i+1);
-                newTriangles.Add(i+w+1);
-            }
-        }
+        GameObject obj = new GameObject("Chunk");
+        obj.GetComponent<Transform>().position = pos;
+        obj.AddComponent<MeshRenderer>();
+        obj.GetComponent<MeshRenderer>().material = chunkMat;
+        obj.AddComponent<MeshFilter>();
+        //setup the custom script
+        obj.AddComponent<WorldGenSlave>();
+        obj.GetComponent<WorldGenSlave>().chunkSize = chunkSize;
+        obj.GetComponent<WorldGenSlave>().vertexScale = vertexScale;
+        obj.GetComponent<WorldGenSlave>().baseScale = baseScale;
+        obj.GetComponent<WorldGenSlave>().octaves = octaves;
+        obj.GetComponent<WorldGenSlave>().initValues();
+        obj.GetComponent<WorldGenSlave>().build();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        transform = GetComponent<Transform>();
-        Mesh mesh = new Mesh();
-        newVertices.Clear();
-        newTriangles.Clear();
-        generateMeshData(chunkSize.x, chunkSize.y);
-        mesh.vertices = newVertices.ToArray();
-        mesh.triangles = newTriangles.ToArray();
-        mesh.RecalculateNormals();
-        mesh.RecalculateTangents();
-        GetComponent<MeshFilter>().mesh = mesh;
+        for (int x = 0; x < renderDistance; x++)
+        {
+            for (int y = 0; y < renderDistance; y++)
+            {
+                for (int z = 0; z < renderDistance; z++)
+                {
+                    addChunk(new Vector3(x*(chunkSize.x-1),y*(chunkSize.y-1),z*(chunkSize.z-1)));
+                }
+            }
+        }
     }
 
     // Update is called once per frame

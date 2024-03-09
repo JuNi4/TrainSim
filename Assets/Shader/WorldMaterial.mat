@@ -51,7 +51,24 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DirtNoiseScale: 300
+    - _DirtSmoothness: 0
+    - _GrassNoiseScale: 500
+    - _GrassSmoothness: 0.2
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    - _RockNoiseScale: 100
+    - _RockSmoothness: 0.1
+    - _SandSmoothness: 0.1
+    - _WaterSmoothness: 0.7
+    - _waterLevel: -5
+    m_Colors:
+    - _DirtColor: {r: 0.6488578, g: 0.37967247, b: 0, a: 0}
+    - _DirtSecColor: {r: 0.33549926, g: 0.17778146, b: 0, a: 0}
+    - _GrassColor: {r: 0.27364698, g: 0.6294149, b: 0, a: 0}
+    - _GrassSecColor: {r: 0.15564464, g: 0.57966584, b: 0.010021211, a: 0}
+    - _RockColor: {r: 0.5655826, g: 0.5655826, b: 0.5655826, a: 0}
+    - _RockSecColor: {r: 0.33609116, g: 0.33609116, b: 0.33609116, a: 0}
+    - _SandColor: {r: 1, g: 0.903475, b: 0.37785366, a: 0}
+    - _WaterColor: {r: 0.01130435, g: 0.5276112, b: 0.9272746, a: 0}
   m_BuildTextureStacks: []
