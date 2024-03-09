@@ -11,11 +11,14 @@ public class FixedObject : MonoBehaviour
 
     public long chunkSize = 200;
 
+    // public Vector3 originalPosition;
+
     // Start is called before the first frame update
 
     public void assignItems()
     {
         train = GameObject.Find("Train").GetComponent<Train>();
+        // originalPosition = gameObject.transform.position;
     }
 
     void Start()
