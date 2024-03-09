@@ -12,7 +12,7 @@ public class Octave
 public class WorldGenMaster : MonoBehaviour
 {
     public Vector3Int chunkSize;
-    public uint renderDistance = 5;
+    public Vector3Int renderDistance = new Vector3Int(5,5,5);
     public int vertexScale;
     public Vector2 baseScale = new Vector2(1,1);
 
@@ -42,11 +42,11 @@ public class WorldGenMaster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x < renderDistance; x++)
+        for (int x = 0; x < renderDistance.x; x++)
         {
-            for (int y = 0; y < renderDistance; y++)
+            for (int y = 0; y < renderDistance.y; y++)
             {
-                for (int z = 0; z < renderDistance; z++)
+                for (int z = 0; z < renderDistance.z; z++)
                 {
                     addChunk(new Vector3(x*(chunkSize.x-1),y*(chunkSize.y-1),z*(chunkSize.z-1)));
                 }
