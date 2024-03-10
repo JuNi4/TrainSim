@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -536,10 +536,10 @@ MonoBehaviour:
   serialController: {fileID: 0}
   useExternalControlls: 1
   locomotiveMass: 5000
-  locomotiveTractiveEffort: 1000
-  locomotiveBreakForce: 500
+  locomotiveTractiveEffort: 5000
+  locomotiveBreakForce: 2500
   locomotiveMaxMainReservoirPressure: 5
-  locomotiveMainReservoirPressure: 0
+  locomotiveMainReservoirPressure: 5
   locomotiveMaxBreakLinePressure: 5
   locomotiveBreakPump: 0.1
   locomotiveBreakValve: 0.2
@@ -547,7 +547,7 @@ MonoBehaviour:
   locomotiveFuelConsumption: 0.1
   locomotiveSandCapacity: 280
   locomotiveSandConsumption: 0.1
-  airFriction: 0.01
+  airFriction: 0.25
   wheelSlipFactor: 1
   wheelSlipSandFactor: 1
   wheelSlipMassFactor: 1
@@ -565,14 +565,35 @@ MonoBehaviour:
     capacity: 150
     fillLevel: 0
     carMaxBrakeLinePressure: 2.5
-    carBreakForce: 500
+    carBreakForce: 2500
     carMass: 1000
   - freightType: 0
     carType: 0
     capacity: 150
     fillLevel: 0
     carMaxBrakeLinePressure: 2.5
-    carBreakForce: 500
+    carBreakForce: 2500
+    carMass: 1000
+  - freightType: 0
+    carType: 0
+    capacity: 150
+    fillLevel: 0
+    carMaxBrakeLinePressure: 2.5
+    carBreakForce: 2500
+    carMass: 1000
+  - freightType: 0
+    carType: 0
+    capacity: 150
+    fillLevel: 0
+    carMaxBrakeLinePressure: 2.5
+    carBreakForce: 2500
+    carMass: 1000
+  - freightType: 0
+    carType: 0
+    capacity: 150
+    fillLevel: 0
+    carMaxBrakeLinePressure: 2.5
+    carBreakForce: 2500
     carMass: 1000
   servos:
   - servoMinAngle: 0
@@ -600,7 +621,7 @@ MonoBehaviour:
     minValue: 0
     maxValue: 0
     type: 4
-  inputs: 000000000400000001000000
+  inputs: 01000000000000000400000005000000
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
