@@ -30,11 +30,14 @@ public class RailGen : MonoBehaviour
 
     public bool showDebug = true;
     public bool showPoints = true;
+    public Color pointColor = Color.yellow;
     public bool showTrack = true;
+    public Color trackColor = Color.blue;
     public bool showTargetHeight = true;
+    public Color theightColor = Color.green;
 
     // Calculates the direction of the last generated rail segmen. Returns a random direction for the first element
-    protected Vector3 calculateSegmentDirection()
+    protected Vector3 calculateLastSegmentDirection()
     {
         if ( points.Count < 2 ) { return new Vector3(1,0,0); }
         // get the last two points
@@ -52,7 +55,7 @@ public class RailGen : MonoBehaviour
     }
 
     // Bezier Function ( src: https://catlikecoding.com/unity/tutorials/curves-and-splines/ )
-    public static Vector3 Bezier (Vector3 p0, Vector3 p1, Vector3 p2, float t) {
+    protected static Vector3 Bezier (Vector3 p0, Vector3 p1, Vector3 p2, float t) {
 		t = Mathf.Clamp01(t);
 		float oneMinusT = 1f - t;
 		return
@@ -65,7 +68,7 @@ public class RailGen : MonoBehaviour
     protected void generateSegment()
     {
         // calculate the direction of the last rail segment
-        Vector3 dir = calculateSegmentDirection(); 
+        Vector3 dir = calculateLastSegmentDirection(); 
 
         // generate random length
         float length = Random.Range(minRailLength, maxRailLength);
@@ -112,7 +115,7 @@ public class RailGen : MonoBehaviour
             //points.Add( new RailData(pos2) );
 
             // calculate the direction of the last rail segment
-            dir = calculateSegmentDirection();
+            dir = calculateLastSegmentDirection();
 
             // generate angle
             float turnTo = Random.Range(-maxAngle, maxAngle);
@@ -191,18 +194,18 @@ public class RailGen : MonoBehaviour
         for ( int i = 0; i < points.Count; i ++ ) {
             // draw generated points
             if (showPoints) {
-                Gizmos.color = Color.yellow;
+                Gizmos.color = pointColor;
                 Gizmos.DrawSphere(points[i].position, 1);
             }
             if ( showTrack ) {
                 // draw line to next element
                 if ( i < points.Count -1 ) {
-                    Gizmos.color = Color.blue;
+                    Gizmos.color = trackColor;
                     Gizmos.DrawLine(points[i].position, points[i+1].position);
             }}
             if ( showTargetHeight ) {
                 // draw line to the target height
-                Gizmos.color = Color.green;
+                Gizmos.color = theightColor;
                 Vector3 p = points[i].position;
                 p.y = getHeightAtPoint(p);
                 Gizmos.DrawLine(points[i].position, p);
