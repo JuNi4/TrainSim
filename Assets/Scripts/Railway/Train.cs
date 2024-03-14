@@ -244,10 +244,6 @@ public class Train : MonoBehaviour
                     //  apply - decrease break pressure
                     //  more apply - decrease break pressure a bit faster
                     //  emerghency - rapid decrease
-                    // if ( val == 0 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-                    // else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
-                    // else if ( val == 3 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
-                    // else if ( val == 4 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
                     if ( val == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
                     else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
                     else if ( val == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
@@ -262,10 +258,39 @@ public class Train : MonoBehaviour
                     //  apply - decrease break pressure
                     //  more apply - decrease break pressure a bit faster
                     //  emerghency - rapid decrease
-                    if ( val == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
+                    if ( val == 4 ) { trainBreakLinePressure += locomotiveBreakValve * Time.deltaTime; }
                     else if ( val == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
-                    else if ( val == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
-                    else if ( val == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
+                    else if ( val == 1 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
+                    else if ( val == 0 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
+
+                    break;
+
+                case InputDeviceType.indipendantBreak_SL:
+
+                    // positions
+                    //  release - increase break pressure
+                    //  hold - hold break pressure
+                    //  apply - decrease break pressure
+                    //  more apply - decrease break pressure a bit faster
+                    //  emerghency - rapid decrease
+                    if ( val == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
+                    else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
+                    else if ( val == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
+                    else if ( val == 0 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
+
+                    break;
+
+                case InputDeviceType.trainBreak_SL:
+                    // positions
+                    //  release - increase break pressure
+                    //  hold - hold break pressure
+                    //  apply - decrease break pressure
+                    //  more apply - decrease break pressure a bit faster
+                    //  emerghency - rapid decrease
+                    if ( val == 4 ) { trainBreakLinePressure += locomotiveBreakValve * Time.deltaTime; }
+                    else if ( val == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
+                    else if ( val == 1 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
+                    else if ( val == 0 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
 
                     break;
 
@@ -277,6 +302,8 @@ public class Train : MonoBehaviour
         // limit breaks
         locomotiveMainReservoirPressure = (double)Mathf.Max( (float)locomotiveMainReservoirPressure, 0 );
         locomotiveMainReservoirPressure = (double)Mathf.Min( (float)locomotiveMainReservoirPressure, (float)locomotiveMaxMainReservoirPressure );
+        trainBreakLinePressure = (double)Mathf.Max( (float)trainBreakLinePressure, 0 );
+        trainBreakLinePressure = (double)Mathf.Min( (float)trainBreakLinePressure, (float)trainMaxBreakLinePressure );
     }
 
 }

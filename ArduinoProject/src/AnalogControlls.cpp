@@ -14,6 +14,8 @@
 #define RVS_1 12
 #define RVS_2 13
 
+#define LB '\n'
+
 #include <Servo.h>
 #include <Arduino.h>
 #include <vector>
@@ -76,7 +78,7 @@ void loop() {
     }
 
     // check if enough data was send
-    if ( serialData.length() >= SERVO_COUNT ) {
+    if ( serialData[ serialData.length() -1 ] == LB ) {
         // go through all data
         for ( int i = 0; i < SERVO_COUNT; i++ ) {
             servos[i].write((int)(char)serialData[i]);
@@ -91,6 +93,7 @@ void loop() {
 
     // read the breake data
     int ind_breake = analogRead(IND_BRK);
+    int trn_breake = analogRead(TRN_BRK);
     // Serial.print( String(fromatBreak( ind_breake ) ) + ", " + String(ind_breake));
 
     // read the reverser data
@@ -99,10 +102,11 @@ void loop() {
     int dir = reverser1? 1 : ( reverser2? 2 : 0 );
 
     // print all the data
+    Serial.print( (char) dir );
     Serial.print( (char) throttle );
     Serial.print( (char) fromatBreak(ind_breake) );
-    Serial.print( (char) dir );
+    Serial.print( (char) fromatBreak(trn_breake) );
 
     // print endline char
-    Serial.print("\n");
+    Serial.print(LB);
 }
