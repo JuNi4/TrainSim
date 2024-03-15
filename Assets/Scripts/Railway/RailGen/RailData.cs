@@ -9,25 +9,38 @@ public class RailData
     public Vector3 position;
 
     // where the point leads to
-    public List<ulong> next;
+    public List<int> next;
 
-    public List<ulong> prev;
+    public List<int> prev;
 
     public RailData( Vector3 pos )
     {
         position = pos;
     }
 
-    public RailData( Vector3 pos, List<ulong> n )
+    public RailData( Vector3 pos, List<int> n )
     {
         position = pos;
         next = n;
     }
 
-    public RailData( Vector3 pos, List<ulong> n, List<ulong> l )
+    public RailData( Vector3 pos, List<int> n, List<int> l )
     {
         position = pos;
         next = n;
         prev = l;
+    }
+
+    public RailData( Vector3 pos, int n )
+    {
+        position = pos;
+        next = new List<int> {n};
+    }
+
+    public RailData( Vector3 pos, int n, int l )
+    {
+        position = pos;
+        next = new List<int> {n};
+        prev = new List<int> {l};
     }
 }

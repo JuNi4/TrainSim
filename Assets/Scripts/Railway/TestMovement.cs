@@ -11,6 +11,8 @@ public class TestMovement : MonoBehaviour
     public float inbetweenPos;
     public int pos;
 
+    public float gravity;
+
     public RailGen trackData;
 
     // Start is called before the first frame update
@@ -39,31 +41,63 @@ public class TestMovement : MonoBehaviour
 
         if ( float.IsNaN(inbetweenPos) ) { inbetweenPos = 1.1f; }
 
-        while ( !(inbetweenPos < 1) ) {
+        // move a point forwards
+        if ( inbetweenPos > 1 ) {
+
             inbetweenPos -= 1;
 
             // recalculate inbetween pos
             inbetweenPos /= Time.deltaTime;
             inbetweenPos *= segmentLength;
 
-            pos += 1;
+            pos = trackData.points[pos].next[0];
             // recalculate distance
             current = trackData.points[pos].position;
-            next = trackData.points[pos+1].position;
+            next = trackData.points[ trackData.points[pos].next[0] ].position;
 
             // get segment direction
-            dir = ( next - current );
-            segmentLength = ( next - current ).x / dir.normalized.x;
+            dir = next - current;
+
+            // get segment length
+            segmentLength = dir.x / dir.normalized.x;
 
             inbetweenPos /= segmentLength;
             inbetweenPos *= Time.deltaTime;
 
-            
-            if ( float.IsNaN(inbetweenPos) ) { inbetweenPos = 1.1f; break; }
+            if ( float.IsNaN(inbetweenPos) ) { inbetweenPos = 1.1f; }
+        }
+
+        // move a point backwards
+        if ( inbetweenPos < 0 ) {
+
+            inbetweenPos = 1;
+
+            // recalculate inbetween pos
+            // inbetweenPos /= Time.deltaTime;
+            // inbetweenPos *= segmentLength;
+
+            pos = trackData.points[pos].prev[0];
+            // recalculate distance
+            current = trackData.points[pos].position;
+            next = trackData.points[trackData.points[pos].prev[0]].position;
+
+            // get segment direction
+            dir = next - current;
+
+            // get segment length
+            //segmentLength = dir.x / dir.normalized.x;
+
+            // inbetweenPos /= segmentLength;
+            // inbetweenPos *= Time.deltaTime;
+
+            if ( float.IsNaN(inbetweenPos) ) { inbetweenPos = -0.1f; }
         }
 
         // update position
         gameObject.transform.position = Vector3.Lerp(current,next,inbetweenPos);
+
+        // apply gravity
+        velocity -= gravity * dir.normalized.y;
 
         // rotate
         float tangle = Vector3.Angle(dir, new Vector3(1,0,0) );
@@ -72,6 +106,6 @@ public class TestMovement : MonoBehaviour
             cangle = Vector3.Angle( trackData.points[pos].position - trackData.points[pos-1].position, new Vector3(1,0,0) );
         }
 
-        gameObject.transform.eulerAngles = new Vector3( 0, Mathf.Lerp(cangle, tangle, inbetweenPos), 0 );
+        gameObject.transform.eulerAngles = new Vector3( 0, -Mathf.Lerp(cangle, tangle, inbetweenPos), 0 );
     }
 }

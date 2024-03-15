@@ -133,12 +133,12 @@ public class RailGen : MonoBehaviour
             for ( float i = 0; i < 1; i += 1 / curveResoloution )
             {
                 // add the points
-                points.Add( new RailData( Bezier(start, pos2, pos, i) ) );
+                points.Add( new RailData( Bezier(start, pos2, pos, i), points.Count+1, points.Count-1 ) );
             }
 
         } else {
             // create a new point
-            points.Add( new RailData(pos) );
+            points.Add( new RailData( pos, points.Count+1, points.Count-1 ) );
         }
 
         // newVerts.Add( start );
@@ -156,7 +156,7 @@ public class RailGen : MonoBehaviour
         // Mesh mesh = new Mesh();
         
         // add start position to list of points
-        points.Add( new RailData( gameObject.transform.position ));
+        points.Add( new RailData( gameObject.transform.position, points.Count+1, -1 ));
 
         // generate all rail segments
         for ( int i = 0; i < 500; i ++ ) {
@@ -176,7 +176,7 @@ public class RailGen : MonoBehaviour
             points = new List<RailData>
             {
                 // add start position to list of points
-                new RailData( gameObject.transform.position )
+                new RailData( gameObject.transform.position, 1 )
             };
 
             // generate all rail segments
