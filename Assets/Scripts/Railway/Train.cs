@@ -56,6 +56,12 @@ public class Train : MonoBehaviour
     public double wheelSlipSandFactor = 1;
     public double wheelSlipMassFactor = 1;
 
+    public enum BreakStyle {
+        NonSelfLapping,
+        SelfLapping
+    }
+    public BreakStyle breakStyle;
+
     // train values //
     [Header("Train Variables")]
     // velocity
@@ -98,7 +104,12 @@ public class Train : MonoBehaviour
         indipendantBreak_NSL, trainBreak_NSL
     }
     public InputDeviceType[] inputs = {};
-    
+
+    [Header("Life Values")]
+    public float throttle;
+    public int indipendantBreakPos;
+    public int trainBreakPos;
+
     // function for calculating the tractive effort int the train
     public void recalculateTrainTractiveEffort()
     {
@@ -145,6 +156,44 @@ public class Train : MonoBehaviour
         recalculateTrainMass();
     }
 
+    void applyBreaks()
+    {
+        // non self lapping breaks
+        if ( breakStyle == BreakStyle.NonSelfLapping ) {
+            // indipendant break
+            if ( indipendantBreakPos == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
+            else if ( indipendantBreakPos == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
+            else if ( indipendantBreakPos == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
+            else if ( indipendantBreakPos == 0 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
+
+            // train break
+            if ( trainBreakPos == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
+            else if ( trainBreakPos == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
+            else if ( trainBreakPos == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
+            else if ( trainBreakPos == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
+        }
+        // limit breaks
+        locomotiveMainReservoirPressure = (double)Mathf.Max( (float)locomotiveMainReservoirPressure, 0 );
+        locomotiveMainReservoirPressure = (double)Mathf.Min( (float)locomotiveMainReservoirPressure, (float)locomotiveMaxMainReservoirPressure );
+    }
+
+    // keyboard controlls
+    void controlls()
+    {
+        // set reverser position
+        if ( Input.GetKeyDown("w") && velocity < 0.1 ) {
+            direction = Directions.forward;
+        } else if ( Input.GetKeyDown("s") && velocity < 0.1 ) {
+            direction = Directions.reverse;
+        }
+        // set throttle
+        if ( Input.GetKeyDown("e") ) {
+            throttle += .01;
+        } else if ( Input.GetKeyDown("d") ) {
+            throttle -= .01;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -164,7 +213,19 @@ public class Train : MonoBehaviour
         //     serialController.SendSerialMessage(""+ x);
         // }
 
+        // key board controlls
+        controlls();
+
+        // apply breaks
+        applyBreaks();
+
         // TRAIN //
+
+        // throttle
+        double acc =  trainTractiveEffort / trainMass * throttle * (Time.deltaTime * 10) * (val > 2? 1:0);
+        // handle throttle
+        if ( direction != Directions.neutral )
+            throttle += acc;
 
         // apply breaks //
         // locomotive breaks
@@ -202,13 +263,6 @@ public class Train : MonoBehaviour
 
     void OnMessageArrived(string msg)
     {
-        // if ( msg.Length >= 1 ) {
-        //     sx = msg[0];
-        // }
-        // if ( msg.Length >= 2 ) {
-        //     sy = msg[1];
-        // }
-
         // go through all inputs
         for ( int i = 0; i < Math.Min( inputs.Length, msg.Length ); i++ )
         {
@@ -219,10 +273,7 @@ public class Train : MonoBehaviour
             {
                 
                 case InputDeviceType.throttle:
-                    double acc =  trainTractiveEffort / trainMass * ( val / (float)255 ) * (Time.deltaTime * 10) * (val > 2? 1:0);
-                    // handle throttle
-                    if ( direction != Directions.neutral )
-                        velocity += acc;
+                    throttle = val / 255f;
 
                     break;
 
@@ -242,16 +293,11 @@ public class Train : MonoBehaviour
                     //  release - increase break pressure
                     //  hold - hold break pressure
                     //  apply - decrease break pressure
-                    //  more apply - decrease break pressure a bit faster
-                    //  emerghency - rapid decrease
-                    // if ( val == 0 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-                    // else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
-                    // else if ( val == 3 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
-                    // else if ( val == 4 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
-                    if ( val == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-                    else if ( val == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
-                    else if ( val == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
-                    else if ( val == 0 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
+                    //  more apply - decrease break pressure a bit faster - not actually a thing
+                    //  emerghency - rapid decrease & emergency break
+
+                    // set position
+                    indipendantBreakPos = val;                    
 
                     break;
 
@@ -262,10 +308,9 @@ public class Train : MonoBehaviour
                     //  apply - decrease break pressure
                     //  more apply - decrease break pressure a bit faster
                     //  emerghency - rapid decrease
-                    if ( val == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
-                    else if ( val == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
-                    else if ( val == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
-                    else if ( val == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
+                    
+                    // set break pos
+                    trainBreakPos = val;
 
                     break;
 
@@ -274,9 +319,6 @@ public class Train : MonoBehaviour
                     break;
             }
         }
-        // limit breaks
-        locomotiveMainReservoirPressure = (double)Mathf.Max( (float)locomotiveMainReservoirPressure, 0 );
-        locomotiveMainReservoirPressure = (double)Mathf.Min( (float)locomotiveMainReservoirPressure, (float)locomotiveMaxMainReservoirPressure );
     }
 
 }
