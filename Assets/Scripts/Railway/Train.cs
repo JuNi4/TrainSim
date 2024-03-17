@@ -26,35 +26,35 @@ public class Train : MonoBehaviour
     [Header("Train Stats")]
 
     // mass of the locomotive
-    public double locomotiveMass = 10000;
+    public float locomotiveMass = 10000f;
 
     // locomotive tractive effort
-    public double locomotiveTractiveEffort = 1000;
+    public float locomotiveTractiveEffort = 1000f;
 
     // locomotive break force
-    public double locomotiveBreakForce = 500;
+    public float locomotiveBreakForce = 500f;
 
-    public double locomotiveMaxMainReservoirPressure = 5;
-    public double locomotiveMainReservoirPressure = 0;
-    public double locomotiveMaxBreakLinePressure = 5;
-    public double locomotiveBreakPump = .1;
-    public double locomotiveBreakValve = .2;
+    public float locomotiveMaxMainReservoirPressure = 5f;
+    public float locomotiveMainReservoirPressure = 0f;
+    public float locomotiveMaxBreakLinePressure = 5f;
+    public float locomotiveBreakPump = .1f;
+    public float locomotiveBreakValve = .2f;
 
     // fuel & sand capacity
-    public double locomotiveFuelCapacity = 300;
-    public double locomotiveFuelConsumption = .1;
+    public float locomotiveFuelCapacity = 300f;
+    public float locomotiveFuelConsumption = .1f;
 
-    public double locomotiveSandCapacity = 280;
-    public double locomotiveSandConsumption = .1;
+    public float locomotiveSandCapacity = 280f;
+    public float locomotiveSandConsumption = .1f;
 
     // friction with air
-    public double airFriction = 0.01;
+    public float airFriction = 0.01f;
 
     // wheelslip
-    public double wheelSlipFactor = 1;
+    public float wheelSlipFactor = 1f;
 
-    public double wheelSlipSandFactor = 1;
-    public double wheelSlipMassFactor = 1;
+    public float wheelSlipSandFactor = 1f;
+    public float wheelSlipMassFactor = 1f;
 
     public enum BreakStyle {
         NonSelfLapping,
@@ -65,7 +65,7 @@ public class Train : MonoBehaviour
     // train values //
     [Header("Train Variables")]
     // velocity
-    public double velocity = 0;
+    public float velocity = 0;
     
     // a list of directions
     public enum Directions
@@ -76,15 +76,15 @@ public class Train : MonoBehaviour
 
     // automaticly set train vars //
     // total mass of the entire train
-    public double trainMass;
+    public float trainMass;
 
     // break power of the carts
-    public double trainBreakForce;
+    public float trainBreakForce;
 
-    public double trainTractiveEffort;
+    public float trainTractiveEffort;
 
-    public double trainMaxBreakLinePressure;
-    public double trainBreakLinePressure = 0;
+    public float trainMaxBreakLinePressure;
+    public float trainBreakLinePressure = 0;
 
     public long chunkPos = 0;
 
@@ -162,20 +162,23 @@ public class Train : MonoBehaviour
         if ( breakStyle == BreakStyle.NonSelfLapping ) {
             // indipendant break
             if ( indipendantBreakPos == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-            else if ( indipendantBreakPos == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3  * Time.deltaTime; }
-            else if ( indipendantBreakPos == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6  * Time.deltaTime; }
+            else if ( indipendantBreakPos == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3f  * Time.deltaTime; }
+            else if ( indipendantBreakPos == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6f  * Time.deltaTime; }
             else if ( indipendantBreakPos == 0 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
 
             // train break
             if ( trainBreakPos == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
-            else if ( trainBreakPos == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3 * Time.deltaTime; }
-            else if ( trainBreakPos == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6 * Time.deltaTime; }
+            else if ( trainBreakPos == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3f * Time.deltaTime; }
+            else if ( trainBreakPos == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6f * Time.deltaTime; }
             else if ( trainBreakPos == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
         }
         // limit breaks
-        locomotiveMainReservoirPressure = (double)Mathf.Max( (float)locomotiveMainReservoirPressure, 0 );
-        locomotiveMainReservoirPressure = (double)Mathf.Min( (float)locomotiveMainReservoirPressure, (float)locomotiveMaxMainReservoirPressure );
+        locomotiveMainReservoirPressure = Mathf.Max( locomotiveMainReservoirPressure, 0 );
+        locomotiveMainReservoirPressure = Mathf.Min( locomotiveMainReservoirPressure, locomotiveMaxMainReservoirPressure );
+        trainBreakLinePressure = Mathf.Max( trainBreakLinePressure, 0 );
+        trainBreakLinePressure = Mathf.Min( trainBreakLinePressure, trainMaxBreakLinePressure );
     }
+
 
     // keyboard controlls
     void controlls()
@@ -187,11 +190,13 @@ public class Train : MonoBehaviour
             direction = Directions.reverse;
         }
         // set throttle
-        if ( Input.GetKeyDown("e") ) {
-            throttle += .01;
-        } else if ( Input.GetKeyDown("d") ) {
-            throttle -= .01;
+        if ( Input.GetKey("e") ) {
+            throttle += .01f;
+        } else if ( Input.GetKey("d") ) {
+            throttle -= .01f;
         }
+        throttle = Mathf.Max( throttle, 0 );
+        throttle = Mathf.Min( throttle, 1 );
     }
 
     // Update is called once per frame
@@ -222,14 +227,14 @@ public class Train : MonoBehaviour
         // TRAIN //
 
         // throttle
-        double acc =  trainTractiveEffort / trainMass * throttle * (Time.deltaTime * 10) * (val > 2? 1:0);
+        float acc =  trainTractiveEffort / trainMass * throttle * (Time.deltaTime * 10);
         // handle throttle
         if ( direction != Directions.neutral )
-            throttle += acc;
+            velocity += acc;
 
         // apply breaks //
         // locomotive breaks
-        double breakForce = locomotiveBreakForce * (( locomotiveMaxMainReservoirPressure - locomotiveMainReservoirPressure) / locomotiveMaxMainReservoirPressure );
+        float breakForce = locomotiveBreakForce * (( locomotiveMaxMainReservoirPressure - locomotiveMainReservoirPressure) / locomotiveMaxMainReservoirPressure );
         breakForce /= trainMass;
         breakForce *= Time.deltaTime;
         if ( velocity - breakForce >= 0 )
@@ -245,10 +250,10 @@ public class Train : MonoBehaviour
         //       Friction
         //  V² * --------
         //         Mass
-        velocity -= Math.Pow(velocity, 2) * ( airFriction / trainMass ) * Time.deltaTime;
+        velocity -= Mathf.Pow(velocity, 2) * ( airFriction / trainMass ) * Time.deltaTime;
 
         // move train
-        gameObject.transform.position += new Vector3( (float)( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
+        gameObject.transform.position += new Vector3( ( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
 
         // // forwards teleportation
         if ( gameObject.transform.position.x > 100 ) {
@@ -319,11 +324,6 @@ public class Train : MonoBehaviour
                     break;
             }
         }
-        // limit breaks
-        locomotiveMainReservoirPressure = (double)Mathf.Max( (float)locomotiveMainReservoirPressure, 0 );
-        locomotiveMainReservoirPressure = (double)Mathf.Min( (float)locomotiveMainReservoirPressure, (float)locomotiveMaxMainReservoirPressure );
-        trainBreakLinePressure = (double)Mathf.Max( (float)trainBreakLinePressure, 0 );
-        trainBreakLinePressure = (double)Mathf.Min( (float)trainBreakLinePressure, (float)trainMaxBreakLinePressure );
     }
 
 }
