@@ -1,112 +1,116 @@
-// Serial Settings
-#define BAUD 9600
-
-// Servos Pins
-#define SERVO_START 2
-#define SERVO_COUNT 5
-
-// Throttle & Brakes
-#define THROTTLE A5
-#define IND_BRK A1
-#define TRN_BRK A2
-
-// reverser pins
-#define RVS_1 12
-#define RVS_2 13
-
-#define LB '\n'
-
 #include <Servo.h>
 #include <Arduino.h>
 #include <vector>
 
-// create servos
+#include "protocoll.hpp"
+#include "components.hpp"
+
+// a list of servos
 std::vector<Servo> servos;
 
+// a list of potentiometers
+std::vector<Potentiometer> potentiometers;
+
+// a list of breaks ( 5 position switch )
+std::vector<Break> breaks;
+
+// a list of reversers ( 3 position switches )
+std::vector<Reverser> reversers;
+
 void setup() {
-    // initialize serial bus
-    Serial.begin(BAUD);
 
-    // instanciate all servos
-    for (int i = 0; i < SERVO_COUNT; i++) {
-        servos.push_back( Servo() );
-        servos[i].attach( SERVO_START + i );
-        servos[i].write(0);
+    // setup serial
+    Serial.begin( TSP_START_BAUD );
+
+}
+
+void handleMessage()
+{
+    // read a message
+    Message msg = readMSG( TSP_NOWAIT );
+
+    // check if a message was received
+    if ( msg.intent == TSP_INTENT_NONE )
+        return;
+
+    switch ( msg.intent ) {
+        // info intent handle
+        case TSP_INTENT_INFO:
+            if ( msg.id == 0 )
+            {
+                // update baud rate
+                Serial.begin( msg.msg );
+            }
+            break;
+
+        case TSP_INTENT_GETVAL: // ( No handler needed for this intent here )
+            break;
+        case TSP_INTENT_SETVAL:
+            // set a servo
+            servos[msg.id].write( msg.msg );
+            break;
+
+        case TSP_INTENT_CLRCOMPONENT:
+            // reset all components
+            servos = std::vector<Servo>();
+            potentiometers = std::vector<Potentiometer>();
+            breaks = std::vector<Break>();
+            reversers = std::vector<Reverser>();
+            break;
+        case TSP_INTENT_ADDCOMPONENT:
+            // check for the component type
+            if ( msg.id == 0 ) // servo
+            {
+                // add a servo
+                servos.push_back( Servo() );
+                // assign the pin
+                servos[servos.size()-1].attach( msg.msg );
+            }
+            if ( msg.id == 1 ) // potentiometer
+            {
+                // add a pot
+                potentiometers.push_back( Potentiometer( msg.msg ) );
+            }
+            if ( msg.id == 2 ) // breaks
+            {
+                // add a pot
+                breaks.push_back( Break( msg.msg ) );
+            }
+            if ( msg.id == 3 ) // reverser
+            {
+                // add a pot
+                reversers.push_back( Reverser( msg.msg & 0xf, (msg.msg >> 8) & 0xf ) );
+            }
+            break;
+
+        default:
+            break;
     }
-
-    // setup all pins
-    pinMode( THROTTLE, INPUT );
-    pinMode( IND_BRK, INPUT );
-    pinMode( TRN_BRK, INPUT );
-    pinMode( RVS_1, INPUT );
-    pinMode( RVS_2, INPUT );
-
-    // pull all the input pins to low in order to make reading easyier
-    analogWrite( THROTTLE, 0 );
-    analogWrite( IND_BRK, 0 );
-    analogWrite( TRN_BRK, 0 );
-    analogWrite( RVS_1, 0 );
-    analogWrite( RVS_2, 0 );
 }
-
-// String readSerial() {
-// 	String out;
-// 	// read all characters from the serial bus
-// 	while (Serial.available() > 0) {
-// 		out += String((char)Serial.read());
-// 		delay( (int) 1000/BAUD );
-// 	}
-// 	// return data read from serial bus
-// 	return out;
-// }
-
-int fromatBreak(int data) {
-    if      ( data > 500 ) { return 4; }
-    else if ( data > 50  ) { return 3; }
-    else if ( data > 25  ) { return 2; }
-    else if ( data > 10  ) { return 1; }
-    else                   { return 0; }
-}
-
-String serialData;
 
 void loop() {
 
-    // read serial data for the servos
-    if ( Serial.available() > 0 ) {
-        for ( int i = 0; i < Serial.available(); i++ ) { serialData += String((char)Serial.read()); }
+    // handle messages
+    handleMessage();
+
+    // send all the values
+    int id = 0;
+
+    for ( unsigned int i = 0; i < potentiometers.size(); i++ )
+    {
+        sendMSG( TSP_INTENT_GETVAL, id, potentiometers[i].get() );
+        id++;
     }
 
-    // check if enough data was send
-    if ( serialData[ serialData.length() -1 ] == LB ) {
-        // go through all data
-        for ( int i = 0; i < SERVO_COUNT; i++ ) {
-            servos[i].write((int)(char)serialData[i]);
-        }
-
-        // reset serial data
-        serialData = "";
+    for ( unsigned int i = 0; i < breaks.size(); i++ )
+    {
+        sendMSG( TSP_INTENT_GETVAL, id, breaks[i].get() );
+        id++;
     }
 
-    // read the throttle data
-    int throttle = analogRead(THROTTLE) / 1023.f * 255;
-
-    // read the breake data
-    int ind_breake = analogRead(IND_BRK);
-    int trn_breake = analogRead(TRN_BRK);
-    // Serial.print( String(fromatBreak( ind_breake ) ) + ", " + String(ind_breake));
-
-    // read the reverser data
-    bool reverser1 = digitalRead( RVS_1 );
-    bool reverser2 = digitalRead( RVS_2 );
-    int dir = reverser1? 1 : ( reverser2? 2 : 0 );
-
-    // print all the data
-    Serial.print( (char) dir );
-    Serial.print( (char) throttle );
-    Serial.print( (char) fromatBreak(ind_breake) );
-    Serial.print( (char) fromatBreak(trn_breake) );
-
-    // print endline char
-    Serial.print(LB);
+    for ( unsigned int i = 0; i < reversers.size(); i++ )
+    {
+        sendMSG( TSP_INTENT_GETVAL, id, reversers[i].get() );
+        id++;
+    }
 }

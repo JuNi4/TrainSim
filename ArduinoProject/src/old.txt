@@ -1,0 +1,49 @@
+// String readSerial() {
+// 	String out;
+// 	// read all characters from the serial bus
+// 	while (Serial.available() > 0) {
+// 		out += String((char)Serial.read());
+// 		delay( (int) 1000/BAUD );
+// 	}
+// 	// return data read from serial bus
+// 	return out;
+// }
+
+
+// // read serial data for the servos
+// if ( Serial.available() > 0 ) {
+//     for ( int i = 0; i < Serial.available(); i++ ) { serialData += String((char)Serial.read()); }
+// }
+
+// // check if enough data was send
+// if ( serialData[ serialData.length() -1 ] == LB ) {
+//     // go through all data
+//     for ( int i = 0; i < SERVO_COUNT; i++ ) {
+//         servos[i].write((int)(char)serialData[i]);
+//     }
+
+//     // reset serial data
+//     serialData = "";
+// }
+
+// // read the throttle data
+// int throttle = analogRead(THROTTLE) / 1023.f * 255;
+
+// // read the breake data
+// int ind_breake = analogRead(IND_BRK);
+// int trn_breake = analogRead(TRN_BRK);
+// // Serial.print( String(fromatBreak( ind_breake ) ) + ", " + String(ind_breake));
+
+// // read the reverser data
+// bool reverser1 = digitalRead( RVS_1 );
+// bool reverser2 = digitalRead( RVS_2 );
+// int dir = reverser1? 1 : ( reverser2? 2 : 0 );
+
+// // print all the data
+// Serial.print( (char) dir );
+// Serial.print( (char) throttle );
+// Serial.print( (char) fromatBreak(ind_breake) );
+// Serial.print( (char) fromatBreak(trn_breake) );
+
+// // print endline char
+// Serial.print(LB);
