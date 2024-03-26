@@ -7,13 +7,15 @@ class Component
 {
     public:
 
+    // the id of the component
+    int id;
+
     // pin of the component
     int pin;
 
     // default constructor
     Component();
-
-    Component( int pin );
+    Component( int pin, int id = -1 );
 
     // get the value of the component
     int get();
@@ -23,10 +25,10 @@ class Potentiometer : public Component
 {
     public:
     Potentiometer() : Component{} {};
-    Potentiometer( int pin ) : Component{ pin } {};
+    Potentiometer( int pin, int id ) : Component{ pin, id } {};
 };
 
-class Break : public Component
+class Switch5 : public Component
 {
     protected:
 
@@ -35,26 +37,39 @@ class Break : public Component
 
     public:
 
-    Break() : Component{} {};
-    Break( int pin ) : Component{ pin } {};
+    Switch5() : Component{} {};
+    Switch5( int pin, int id ) : Component{ pin, id } {};
 
     // get the value of the break
     int get();
 };
 
-class Reverser
+class Switch3
 {
     public:
+
+    // the id of the component
+    int id;
 
     // pin for forward
     int pinA;
     // pin for backwards
     int pinB;
 
-    Reverser();
-    Reverser( int pinA, int pinB );
+    Switch3();
+    Switch3( int pinA, int pinB, int id );
 
     // get the value of the reverser
+    int get();
+};
+
+class Switch2 : public Component
+{
+    public:
+    Switch2() : Component{} {};
+    Switch2( int pin, int id ) : Component{ pin, id } {};
+
+    // get the value of the switch
     int get();
 };
 

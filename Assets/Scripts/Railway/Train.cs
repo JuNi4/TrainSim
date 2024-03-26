@@ -18,9 +18,9 @@ using System;
 public class Train : MonoBehaviour
 {   
     // Serial setup //
-    [Header("Serial Comms Controller")] 
-    public SerialController serialController;
-    public bool useExternalControlls = true;
+    // [Header("Serial Comms Controller")] 
+    // public SerialController serialController;
+    // public bool useExternalControlls = true;
 
     // Settings //
     [Header("Train Stats")]
@@ -92,18 +92,6 @@ public class Train : MonoBehaviour
     public TrainCar[] cars;
 
     // Input Values //
-    [Header("Controll Variables")]
-
-    public Servo[] servos = {};
-
-    public enum InputDeviceType
-    {
-        throttle,
-        reverser,
-        indipendantBreak_SL, trainBreak_SL,
-        indipendantBreak_NSL, trainBreak_NSL
-    }
-    public InputDeviceType[] inputs = {};
 
     [Header("Life Values")]
     public float throttle;
@@ -114,32 +102,32 @@ public class Train : MonoBehaviour
     public void recalculateTrainTractiveEffort()
     {
         // add current locomotive tractive effort
-        trainTractiveEffort = locomotiveTractiveEffort;
+        this.trainTractiveEffort = this.locomotiveTractiveEffort;
     }
     public void recalculateTrainBreakForce()
     {
-        trainBreakForce = 0;
+        this.trainBreakForce = 0;
         // add all break forces
         for ( int i = 0; i < cars.Length; i++ ) {
-            trainBreakForce += cars[i].carBreakForce;
+            this.trainBreakForce += this.cars[i].carBreakForce;
         }
     }
     public void recalculateTrainMaxBreakLinePressure()
     {
         // add current locomotive break pressure
-        trainMaxBreakLinePressure = locomotiveMaxBreakLinePressure;
+        this.trainMaxBreakLinePressure = this.locomotiveMaxBreakLinePressure;
         // add all break forces
         for ( int i = 0; i < cars.Length; i++ ) {
-            trainMaxBreakLinePressure += cars[i].carMaxBrakeLinePressure;
+            this.trainMaxBreakLinePressure += this.cars[i].carMaxBrakeLinePressure;
         }
     }
     public void recalculateTrainMass()
     {
         // add current locomotive mass
-        trainMass = locomotiveMass;
+        this.trainMass = this.locomotiveMass;
         // add all break forces
-        for ( int i = 0; i < cars.Length; i++ ) {
-            trainMass += cars[i].carMass;
+        for ( int i = 0; i < this.cars.Length; i++ ) {
+            this.trainMass += this.cars[i].carMass;
         }
     }
 
@@ -150,33 +138,33 @@ public class Train : MonoBehaviour
         gameObject.transform.position = new Vector3(0,0,0);
 
 
-        recalculateTrainTractiveEffort();
-        recalculateTrainBreakForce();
-        recalculateTrainMaxBreakLinePressure();
-        recalculateTrainMass();
+        this.recalculateTrainTractiveEffort();
+        this.recalculateTrainBreakForce();
+        this.recalculateTrainMaxBreakLinePressure();
+        this.recalculateTrainMass();
     }
 
     void applyBreaks()
     {
         // non self lapping breaks
-        if ( breakStyle == BreakStyle.NonSelfLapping ) {
+        if ( this.breakStyle == BreakStyle.NonSelfLapping ) {
             // indipendant break
-            if ( indipendantBreakPos == 4 ) { locomotiveMainReservoirPressure += locomotiveBreakPump * Time.deltaTime; }
-            else if ( indipendantBreakPos == 2 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .3f  * Time.deltaTime; }
-            else if ( indipendantBreakPos == 1 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * .6f  * Time.deltaTime; }
-            else if ( indipendantBreakPos == 0 ) { locomotiveMainReservoirPressure -= locomotiveBreakValve * Time.deltaTime; }
+            if ( this.indipendantBreakPos == 4 ) { this.locomotiveMainReservoirPressure += this.locomotiveBreakPump * Time.deltaTime; }
+            else if ( this.indipendantBreakPos == 2 ) { this.locomotiveMainReservoirPressure -= this.locomotiveBreakValve * .3f  * Time.deltaTime; }
+            else if ( this.indipendantBreakPos == 1 ) { this.locomotiveMainReservoirPressure -= this.locomotiveBreakValve * .6f  * Time.deltaTime; }
+            else if ( this.indipendantBreakPos == 0 ) { this.locomotiveMainReservoirPressure -= this.locomotiveBreakValve * Time.deltaTime; }
 
             // train break
-            if ( trainBreakPos == 0 ) { trainBreakLinePressure += locomotiveBreakValve; }
-            else if ( trainBreakPos == 2 ) { trainBreakLinePressure -= locomotiveBreakValve * .3f * Time.deltaTime; }
-            else if ( trainBreakPos == 3 ) { trainBreakLinePressure -= locomotiveBreakValve * .6f * Time.deltaTime; }
-            else if ( trainBreakPos == 4 ) { trainBreakLinePressure -= locomotiveBreakValve * Time.deltaTime; }
+            if ( this.trainBreakPos == 0 ) { this.trainBreakLinePressure += this.locomotiveBreakValve; }
+            else if ( this.trainBreakPos == 2 ) { this.trainBreakLinePressure -= this.locomotiveBreakValve * .3f * Time.deltaTime; }
+            else if ( this.trainBreakPos == 3 ) { this.trainBreakLinePressure -= this.locomotiveBreakValve * .6f * Time.deltaTime; }
+            else if ( this.trainBreakPos == 4 ) { this.trainBreakLinePressure -= this.locomotiveBreakValve * Time.deltaTime; }
         }
         // limit breaks
-        locomotiveMainReservoirPressure = Mathf.Max( locomotiveMainReservoirPressure, 0 );
-        locomotiveMainReservoirPressure = Mathf.Min( locomotiveMainReservoirPressure, locomotiveMaxMainReservoirPressure );
-        trainBreakLinePressure = Mathf.Max( trainBreakLinePressure, 0 );
-        trainBreakLinePressure = Mathf.Min( trainBreakLinePressure, trainMaxBreakLinePressure );
+        this.locomotiveMainReservoirPressure = Mathf.Max( this.locomotiveMainReservoirPressure, 0 );
+        this.locomotiveMainReservoirPressure = Mathf.Min( this.locomotiveMainReservoirPressure, this.locomotiveMaxMainReservoirPressure );
+        this.trainBreakLinePressure = Mathf.Max( this.trainBreakLinePressure, 0 );
+        this.trainBreakLinePressure = Mathf.Min( this.trainBreakLinePressure, this.trainMaxBreakLinePressure );
     }
 
 
@@ -185,18 +173,18 @@ public class Train : MonoBehaviour
     {
         // set reverser position
         if ( Input.GetKeyDown("w") && velocity < 0.1 ) {
-            direction = Directions.forward;
+            this.direction = Directions.forward;
         } else if ( Input.GetKeyDown("s") && velocity < 0.1 ) {
-            direction = Directions.reverse;
+            this.direction = Directions.reverse;
         }
         // set throttle
         if ( Input.GetKey("e") ) {
-            throttle += .01f;
+            this.throttle += .01f;
         } else if ( Input.GetKey("d") ) {
-            throttle -= .01f;
+            this.throttle -= .01f;
         }
-        throttle = Mathf.Max( throttle, 0 );
-        throttle = Mathf.Min( throttle, 1 );
+        this.throttle = Mathf.Max( this.throttle, 0 );
+        this.throttle = Mathf.Min( this.throttle, 1 );
     }
 
     // Update is called once per frame
@@ -219,111 +207,51 @@ public class Train : MonoBehaviour
         // }
 
         // key board controlls
-        controlls();
+        this.controlls();
 
-        // apply breaks
-        applyBreaks();
 
         // TRAIN //
 
         // throttle
-        float acc =  trainTractiveEffort / trainMass * throttle * (Time.deltaTime * 10);
+        float acc =  this.trainTractiveEffort / this.trainMass * this.throttle * (Time.deltaTime * 10);
         // handle throttle
-        if ( direction != Directions.neutral )
-            velocity += acc;
+        if ( this.direction != Directions.neutral )
+            this.velocity += acc;
+
+        // apply breaks
+        this.applyBreaks();
 
         // apply breaks //
         // locomotive breaks
-        float breakForce = locomotiveBreakForce * (( locomotiveMaxMainReservoirPressure - locomotiveMainReservoirPressure) / locomotiveMaxMainReservoirPressure );
-        breakForce /= trainMass;
+        float breakForce = this.locomotiveBreakForce * (( this.locomotiveMaxMainReservoirPressure - this.locomotiveMainReservoirPressure) / this.locomotiveMaxMainReservoirPressure );
+        breakForce /= this.trainMass;
         breakForce *= Time.deltaTime;
-        if ( velocity - breakForce >= 0 )
-            velocity -= breakForce;
+        if ( this.velocity - breakForce >= 0 )
+            this.velocity -= breakForce;
         // train breaks
-        breakForce = trainBreakForce * (( trainMaxBreakLinePressure - trainBreakLinePressure) / trainMaxBreakLinePressure );
-        breakForce /= trainMass;
+        breakForce = this.trainBreakForce * (( this.trainMaxBreakLinePressure - this.trainBreakLinePressure) / this.trainMaxBreakLinePressure );
+        breakForce /= this.trainMass;
         breakForce *= Time.deltaTime;
-        if ( velocity - breakForce >= 0 )
-            velocity -= breakForce;
+        if ( this.velocity - breakForce >= 0 )
+            this.velocity -= breakForce;
 
         // natural deacceleration
         //       Friction
         //  V² * --------
         //         Mass
-        velocity -= Mathf.Pow(velocity, 2) * ( airFriction / trainMass ) * Time.deltaTime;
+        this.velocity -= Mathf.Pow(this.velocity, 2) * ( this.airFriction / this.trainMass ) * Time.deltaTime;
 
         // move train
-        gameObject.transform.position += new Vector3( ( direction == Directions.forward? velocity : -velocity ) * Time.deltaTime,0,0);
+        gameObject.transform.position += new Vector3( ( this.direction == Directions.forward? this.velocity : -this.velocity ) * Time.deltaTime,0,0);
 
         // // forwards teleportation
         if ( gameObject.transform.position.x > 100 ) {
             gameObject.transform.position -= new Vector3(200,0,0);
-            chunkPos += 1;
+            this.chunkPos += 1;
         }
         if ( gameObject.transform.position.x < -100 ) {
             gameObject.transform.position += new Vector3(200,0,0);
-            chunkPos -= 1;
+            this.chunkPos -= 1;
         }
     }
-
-    void OnMessageArrived(string msg)
-    {
-        // go through all inputs
-        for ( int i = 0; i < Math.Min( inputs.Length, msg.Length ); i++ )
-        {
-            // get value from message
-            int val = (int) msg[i];
-            // determine by the type, what value should be extracted
-            switch (inputs[i])
-            {
-                
-                case InputDeviceType.throttle:
-                    throttle = val / 255f;
-
-                    break;
-
-                case InputDeviceType.reverser:
-                    // check if train is nearly not moving
-                    if ( velocity > 0.1 ) { break; }
-                    // set reverser
-                    if ( val == 0 ) { direction = Directions.neutral; }
-                    if ( val == 1 ) { direction = Directions.reverse; }
-                    if ( val == 2 ) { direction = Directions.forward; }
-
-                    break;
-
-                case InputDeviceType.indipendantBreak_NSL:
-
-                    // positions
-                    //  release - increase break pressure
-                    //  hold - hold break pressure
-                    //  apply - decrease break pressure
-                    //  more apply - decrease break pressure a bit faster - not actually a thing
-                    //  emerghency - rapid decrease & emergency break
-
-                    // set position
-                    indipendantBreakPos = val;                    
-
-                    break;
-
-                case InputDeviceType.trainBreak_NSL:
-                    // positions
-                    //  release - increase break pressure
-                    //  hold - hold break pressure
-                    //  apply - decrease break pressure
-                    //  more apply - decrease break pressure a bit faster
-                    //  emerghency - rapid decrease
-                    
-                    // set break pos
-                    trainBreakPos = val;
-
-                    break;
-
-                default:
-                    // IDK
-                    break;
-            }
-        }
-    }
-
 }

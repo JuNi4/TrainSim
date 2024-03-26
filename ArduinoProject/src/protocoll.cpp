@@ -28,6 +28,7 @@ Message::Message()
 
 void Message::decodeMessage( std::vector<uint8_t> bytes )
 {
+    // extract header
     this->intent = (int) bytes[0];
     this->id = (int) bytes[1];
 
@@ -35,7 +36,7 @@ void Message::decodeMessage( std::vector<uint8_t> bytes )
     // read the bytes
     for ( int i = 0; i < 4; i++ )
     {
-        this->msg |= bytes[5-i] << 8*i ;
+        this->msg |= bytes[bytes.size() -1 -i] << 8*i ;
     }
 }
 
@@ -92,10 +93,9 @@ Message readMSG( bool dont_wait )
             // read a message
             bytes.push_back( Serial.read() );
         }
-    }
 
-    // decode message
-    out.decodeMessage( bytes );
+        out.decodeMessage( bytes );
+    }
 
     // reuturn the recieved message
     return out;
@@ -110,6 +110,10 @@ Message readMSG( bool dont_wait )
  */
 void sendMSG( int intent, int id, int msg )
 {
+    // make sure the delimeter does not get send
+    // if ( (char)intent == TSP_DELIMITER ) { intent -= 1; }
+    // if ( (char)id == TSP_DELIMITER ) { id -= 1; }
+
     // send header
     Serial.print( (char) intent );
     Serial.print( (char) id );
@@ -118,8 +122,16 @@ void sendMSG( int intent, int id, int msg )
     for ( int i = 0; i < 4; i++ )
     {
         // send all bytes of the message
-        Serial.print( (char) msg >> (8 * 3-i) );
+        int x = ( msg >> (8 * (3-i)) ) & 0xff;
+        // make sure the delimeter does not get send
+        // if ( (char) x == TSP_DELIMITER ) { x -= 1; }
+        Serial.print( (char) x );
     }
+
+    // Serial.print( String("") +(char) intent + (char) id + (char) ( ( msg >> (8 * 3) ) & 0xf ) + (char) ( ( msg >> (8 * 2) ) & 0xf ) + (char) ( ( msg >> (8 * 1) ) & 0xf ) + (char) ( msg  & 0xf ) );
+
+    // print line break
+    // Serial.print( TSP_DELIMITER );
 }
 
 /**
@@ -129,14 +141,5 @@ void sendMSG( int intent, int id, int msg )
  */
 void sendMSG( Message msg )
 {
-    // send header
-    Serial.print( (char) msg.intent );
-    Serial.print( (char) msg.id );
-
-    // send message
-    for ( int i = 0; i < 4; i++ )
-    {
-        // send all bytes of the message
-        Serial.print( (char) msg.msg >> (8 * 3-i) );
-    }
+    sendMSG( msg.intent, msg.id, msg.msg );
 }

@@ -22,7 +22,9 @@
 
 #define TSP_MESSAGE_SIZE 6
 
-#define TSP_START_BAUD 300
+#define TSP_START_BAUD 9600
+
+#define TSP_DELIMITER (char)0xff
 
 ///////////////////////////
 // a list of all intents //

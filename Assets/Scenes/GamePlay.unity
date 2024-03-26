@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571328, b: 0.3069218, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -265,6 +265,93 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6db6eebee56eb4d9c949274e742141c8, type: 3}
+--- !u!1 &182250776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182250779}
+  - component: {fileID: 182250778}
+  - component: {fileID: 182250777}
+  m_Layer: 0
+  m_Name: TSP Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &182250777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182250776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f54a50bf66bde5cc8ad497c3afc5094a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  train: {fileID: 622323586}
+  baudRate: 9600
+  servos: []
+  devices:
+  - primaryPin: 19
+    secondaryPin: 0
+    deviceType: 0
+    interpretationDeviceType: 0
+  - primaryPin: 4
+    secondaryPin: 5
+    deviceType: 2
+    interpretationDeviceType: 1
+  - primaryPin: 14
+    secondaryPin: 0
+    deviceType: 1
+    interpretationDeviceType: 2
+  - primaryPin: 15
+    secondaryPin: 0
+    deviceType: 1
+    interpretationDeviceType: 3
+  isConnected: 0
+  serialController: {fileID: 182250778}
+  ranSetup: 0
+  requestIndex: 0
+--- !u!114 &182250778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182250776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a517ae9628bec158b993a1e41dc8369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portName: /dev/ttyACM0
+  baudRate: 9600
+  messageListener: {fileID: 182250776}
+  reconnectionDelay: 5000
+  maxUnreadMessages: 1
+  delimeter: 255
+--- !u!4 &182250779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182250776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &250337082
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,8 +620,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea6b2b97fa9fac633b0a856e639996d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serialController: {fileID: 0}
-  useExternalControlls: 1
   locomotiveMass: 5000
   locomotiveTractiveEffort: 5000
   locomotiveBreakForce: 2500
@@ -596,33 +681,6 @@ MonoBehaviour:
     carMaxBrakeLinePressure: 2.5
     carBreakForce: 2500
     carMass: 1000
-  servos:
-  - servoMinAngle: 0
-    servoMaxAngle: 0
-    minValue: 0
-    maxValue: 0
-    type: 0
-  - servoMinAngle: 0
-    servoMaxAngle: 0
-    minValue: 0
-    maxValue: 0
-    type: 1
-  - servoMinAngle: 0
-    servoMaxAngle: 0
-    minValue: 0
-    maxValue: 0
-    type: 2
-  - servoMinAngle: 0
-    servoMaxAngle: 0
-    minValue: 0
-    maxValue: 0
-    type: 3
-  - servoMinAngle: 0
-    servoMaxAngle: 0
-    minValue: 0
-    maxValue: 0
-    type: 4
-  inputs: 01000000000000000400000005000000
   throttle: 0
   indipendantBreakPos: 0
   trainBreakPos: 0
@@ -1157,75 +1215,6 @@ Transform:
   - {fileID: 1180366520}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1130868930
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 128384, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_Name
-      value: SerialController
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: portName
-      value: /dev/ttyACM0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
-      propertyPath: messageListener
-      value: 
-      objectReference: {fileID: 622323580}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 3}
 --- !u!1 &1180366515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1399,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 705507995}
-  - {fileID: 1130868930}
+  - {fileID: 182250779}
   - {fileID: 622323585}
   - {fileID: 2009798614}
   - {fileID: 359573991}
