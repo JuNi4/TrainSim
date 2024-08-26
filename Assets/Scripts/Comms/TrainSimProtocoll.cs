@@ -7,9 +7,6 @@ using Unity.VisualScripting;
 
 public class TrainSimProtocoll : MonoBehaviour
 {
-    // train object
-    public Train train;
-
     [Header("Serial Settings")]
     public uint baudRate = 9600;
 
@@ -166,61 +163,6 @@ public class TrainSimProtocoll : MonoBehaviour
         // Debug.Log(msg);
 
         // evaluate message
-
-        // check if a device with the provided id is present
-        if ( devices.Length < id || id < 0 )
-            return;
-
-        // determine by the type, what value should be extracted
-        switch (devices[id].interpretationDeviceType)
-        {
-            
-            case Device.InterpretationDeviceType.throttle:
-                this.train.throttle = msg / 1023f;
-
-                break;
-
-            case Device.InterpretationDeviceType.reverser:
-                // check if train is nearly not moving
-                if ( this.train.velocity > 0.1 ) { break; }
-                // set reverser
-                if ( msg == 0 ) { this.train.direction = Train.Directions.neutral; }
-                if ( msg == 1 ) { this.train.direction = Train.Directions.reverse; }
-                if ( msg == 2 ) { this.train.direction = Train.Directions.forward; }
-
-                break;
-
-            case Device.InterpretationDeviceType.indipendantBreak:
-
-                // positions
-                //  release - increase break pressure
-                //  hold - hold break pressure
-                //  apply - decrease break pressure
-                //  more apply - decrease break pressure a bit faster - not actually a thing
-                //  emerghency - rapid decrease & emergency break
-
-                // set position
-                this.train.indipendantBreakPos = msg;
-
-                break;
-
-            case Device.InterpretationDeviceType.trainBreak:
-                // positions
-                //  release - increase break pressure
-                //  hold - hold break pressure
-                //  apply - decrease break pressure
-                //  more apply - decrease break pressure a bit faster
-                //  emerghency - rapid decrease
-                
-                // set break pos
-                this.train.trainBreakPos = msg;
-
-                break;
-
-            default:
-                // IDK
-                break;
-        }
     }
 
     public void OnTearDown()

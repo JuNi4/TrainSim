@@ -86,9 +86,14 @@ void handleMessage()
         case TSP_INTENT_INFO:
             if ( msg.id == 0 )
             {
+                break;
                 Serial.end();
                 // update baud rate
                 Serial.begin( msg.msg );
+            } else
+            {
+                // notify, the arduino is online
+                sendMSG(Message(TSP_INTENT_INFO, 1, 42));
             }
             break;
 
